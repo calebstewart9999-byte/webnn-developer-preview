@@ -4433,7 +4433,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const VERSION = '3.0.0-alpha.22';
+const VERSION = '3.0.0';
 
 // Check if various APIs are available (depends on environment)
 const IS_BROWSER_ENV = typeof self !== 'undefined';
@@ -6778,15 +6778,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/generic.js */ "./src/utils/generic.js");
 /* harmony import */ var _utils_core_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/core.js */ "./src/utils/core.js");
 /* harmony import */ var _utils_hub_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils/hub.js */ "./src/utils/hub.js");
-/* harmony import */ var _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./generation/logits_process.js */ "./src/generation/logits_process.js");
-/* harmony import */ var _generation_configuration_utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./generation/configuration_utils.js */ "./src/generation/configuration_utils.js");
-/* harmony import */ var _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utils/tensor.js */ "./src/utils/tensor.js");
-/* harmony import */ var _utils_maths_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/maths.js */ "./src/utils/maths.js");
-/* harmony import */ var _generation_stopping_criteria_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./generation/stopping_criteria.js */ "./src/generation/stopping_criteria.js");
-/* harmony import */ var _generation_logits_sampler_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./generation/logits_sampler.js */ "./src/generation/logits_sampler.js");
-/* harmony import */ var _env_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./env.js */ "./src/env.js");
-/* harmony import */ var _models_whisper_generation_whisper_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./models/whisper/generation_whisper.js */ "./src/models/whisper/generation_whisper.js");
-/* harmony import */ var _models_whisper_common_whisper_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./models/whisper/common_whisper.js */ "./src/models/whisper/common_whisper.js");
+/* harmony import */ var _utils_constants_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/constants.js */ "./src/utils/constants.js");
+/* harmony import */ var _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./generation/logits_process.js */ "./src/generation/logits_process.js");
+/* harmony import */ var _generation_configuration_utils_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./generation/configuration_utils.js */ "./src/generation/configuration_utils.js");
+/* harmony import */ var _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utils/tensor.js */ "./src/utils/tensor.js");
+/* harmony import */ var _utils_maths_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils/maths.js */ "./src/utils/maths.js");
+/* harmony import */ var _generation_stopping_criteria_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./generation/stopping_criteria.js */ "./src/generation/stopping_criteria.js");
+/* harmony import */ var _generation_logits_sampler_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./generation/logits_sampler.js */ "./src/generation/logits_sampler.js");
+/* harmony import */ var _env_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./env.js */ "./src/env.js");
+/* harmony import */ var _models_whisper_generation_whisper_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./models/whisper/generation_whisper.js */ "./src/models/whisper/generation_whisper.js");
+/* harmony import */ var _models_whisper_common_whisper_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./models/whisper/common_whisper.js */ "./src/models/whisper/common_whisper.js");
 
 /**
  * @file Definitions of all models available in Transformers.js.
@@ -6826,6 +6827,8 @@ __webpack_require__.r(__webpack_exports__);
  * 
  * @module models
  */
+
+
 
 
 
@@ -6898,7 +6901,7 @@ async function getSession(pretrained_model_name_or_path, fileName, options) {
 
     // If the device is not specified, we use the default (supported) execution providers.
     const selectedDevice = /** @type {import("./utils/devices.js").DeviceType} */(
-        device ?? (_env_js__WEBPACK_IMPORTED_MODULE_12__.apis.IS_NODE_ENV ? 'cpu' : 'wasm')
+        device ?? (_env_js__WEBPACK_IMPORTED_MODULE_13__.apis.IS_NODE_ENV ? 'cpu' : 'wasm')
     );
     const executionProviders = (0,_backends_onnx_js__WEBPACK_IMPORTED_MODULE_1__.deviceToExecutionProviders)(selectedDevice);
 
@@ -6972,7 +6975,7 @@ async function getSession(pretrained_model_name_or_path, fileName, options) {
             use_external_data_format[fileName] === true
         )
     )) {
-        if (_env_js__WEBPACK_IMPORTED_MODULE_12__.apis.IS_NODE_ENV) {
+        if (_env_js__WEBPACK_IMPORTED_MODULE_13__.apis.IS_NODE_ENV) {
             throw new Error('External data format is not yet supported in Node.js');
         }
         const path = `${fileName}${suffix}.onnx_data`;
@@ -7073,7 +7076,7 @@ function validateInputs(session, inputs) {
         // Rare case where one of the model's input names corresponds to a built-in
         // object name (e.g., toString), which would cause a simple (!tensor) check to fail,
         // because it's not undefined but a function.
-        if (!(tensor instanceof _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor)) {
+        if (!(tensor instanceof _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor)) {
             missingInputs.push(inputName);
             continue;
         }
@@ -7183,7 +7186,7 @@ async function sessionRun(session, inputs) {
 function replaceTensors(obj) {
     for (let prop in obj) {
         if ((0,_backends_onnx_js__WEBPACK_IMPORTED_MODULE_1__.isONNXTensor)(obj[prop])) {
-            obj[prop] = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor(obj[prop]);
+            obj[prop] = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor(obj[prop]);
         } else if (typeof obj[prop] === 'object') {
             replaceTensors(obj[prop]);
         }
@@ -7200,7 +7203,7 @@ function replaceTensors(obj) {
  * @private
  */
 function toI64Tensor(items) {
-    if (items instanceof _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor) {
+    if (items instanceof _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor) {
         return items;
     }
     // items is an array
@@ -7214,13 +7217,13 @@ function toI64Tensor(items) {
             throw Error("Unable to create tensor, you should probably activate truncation and/or padding with 'padding=True' and/or 'truncation=True' to have batched tensors with the same length.")
         }
 
-        return new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor('int64',
+        return new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor('int64',
             BigInt64Array.from(items.flat().map(x => BigInt(x))),
             [items.length, items[0].length]
         );
     } else {
         //flat
-        return new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor('int64',
+        return new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor('int64',
             BigInt64Array.from(items.map(x => BigInt(x))),
             [1, items.length]
         );
@@ -7234,7 +7237,7 @@ function toI64Tensor(items) {
  * @private
  */
 function boolTensor(value) {
-    return new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor('bool', [value], [1]);
+    return new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor('bool', [value], [1]);
 }
 
 // JS doesn't support mixins, so we define some reused functions here, and allow "this" to be passed in
@@ -7286,7 +7289,7 @@ async function encoderForward(self, model_inputs) {
     if (session.inputNames.includes('token_type_ids') && !encoderFeeds.token_type_ids) {
         // Assign default `token_type_ids` (all zeroes) to the `encoderFeeds` if the model expects it,
         // but they weren't created by the tokenizer.
-        encoderFeeds.token_type_ids = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor(
+        encoderFeeds.token_type_ids = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor(
             'int64',
             new BigInt64Array(encoderFeeds.input_ids.data.length),
             encoderFeeds.input_ids.dims
@@ -7380,8 +7383,8 @@ async function imageTextToTextForward(self, {
             const target_length = input_ids.dims[1]; // always 1
             const past_length = Object.values(past_key_values)[0].dims.at(-2);
 
-            attention_mask = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)([
-                (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.ones)([input_ids.dims[0], past_length]),
+            attention_mask = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)([
+                (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.ones)([input_ids.dims[0], past_length]),
                 attention_mask.slice(null, [attention_mask.dims[1] - target_length, attention_mask.dims[1]]),
             ], 1);
         }
@@ -7425,7 +7428,7 @@ function createPositionIds(model_inputs, past_key_values = null) {
         }
     }
 
-    let position_ids = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor('int64', data, attention_mask.dims);
+    let position_ids = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor('int64', data, attention_mask.dims);
     if (past_key_values) {
         const offset = -(input_ids ?? inputs_embeds).dims.at(1);
         position_ids = position_ids.slice(null, [offset, null]);
@@ -7472,7 +7475,7 @@ function decoder_prepare_inputs_for_generation(self, input_ids, model_inputs, ge
                 model_inputs.input_ids = input_ids.slice(null, [-num_new_tokens, null]);
 
                 // TODO: The attention mask should be formed from the attention mask passed in model_inputs
-                model_inputs.attention_mask = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.ones)([1, past_length + num_new_tokens]);
+                model_inputs.attention_mask = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.ones)([1, past_length + num_new_tokens]);
             }
         }
     }
@@ -7697,7 +7700,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
 
         } else { // should be MODEL_TYPES.EncoderOnly
             if (modelType !== MODEL_TYPES.EncoderOnly) {
-                console.warn(`Model type for '${modelName ?? config?.model_type}' not found, assuming encoder-only architecture. Please report this at https://github.com/xenova/transformers.js/issues/new/choose.`)
+                console.warn(`Model type for '${modelName ?? config?.model_type}' not found, assuming encoder-only architecture. Please report this at ${_utils_constants_js__WEBPACK_IMPORTED_MODULE_6__.GITHUB_ISSUE_URL}.`)
             }
             info = await Promise.all([
                 constructSessions(pretrained_model_name_or_path, {
@@ -7747,18 +7750,18 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
     _get_logits_warper(generation_config) {
 
         // instantiate warpers list
-        const warpers = new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.LogitsProcessorList();
+        const warpers = new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.LogitsProcessorList();
 
         if (generation_config.temperature !== null && generation_config.temperature !== 1.0) {
-            warpers.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.TemperatureLogitsWarper(generation_config.temperature));
+            warpers.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.TemperatureLogitsWarper(generation_config.temperature));
         }
         if (generation_config.top_k !== null && generation_config.top_k !== 0) {
             // TODO: add min_tokens_to_keep
-            warpers.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.TopKLogitsWarper(generation_config.top_k));
+            warpers.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.TopKLogitsWarper(generation_config.top_k));
         }
         if (generation_config.top_p !== null && generation_config.top_p < 1.0) {
             // TODO: add min_tokens_to_keep
-            warpers.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.TopPLogitsWarper(generation_config.top_p));
+            warpers.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.TopPLogitsWarper(generation_config.top_p));
         }
 
         return warpers;
@@ -7777,7 +7780,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
         // prefix_allowed_tokens_fn, TODO
         logits_processor = null
     ) {
-        const processors = new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.LogitsProcessorList();
+        const processors = new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.LogitsProcessorList();
 
         // if (generation_config.diversity_penalty !== null && generation_config.diversity_penalty > 0.0) {
         //     processors.push(new HammingDiversityLogitsProcessor(
@@ -7795,11 +7798,11 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
         // }
 
         if (generation_config.repetition_penalty !== null && generation_config.repetition_penalty !== 1.0) {
-            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.RepetitionPenaltyLogitsProcessor(generation_config.repetition_penalty));
+            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.RepetitionPenaltyLogitsProcessor(generation_config.repetition_penalty));
         }
 
         if (generation_config.no_repeat_ngram_size !== null && generation_config.no_repeat_ngram_size > 0) {
-            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.NoRepeatNGramLogitsProcessor(generation_config.no_repeat_ngram_size));
+            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.NoRepeatNGramLogitsProcessor(generation_config.no_repeat_ngram_size));
         }
 
         // if (generation_config.encoder_no_repeat_ngram_size !== null && generation_config.encoder_no_repeat_ngram_size > 0) {
@@ -7814,15 +7817,15 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
         // }
 
         if (generation_config.bad_words_ids !== null) {
-            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.NoBadWordsLogitsProcessor(generation_config.bad_words_ids, generation_config.eos_token_id));
+            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.NoBadWordsLogitsProcessor(generation_config.bad_words_ids, generation_config.eos_token_id));
         }
 
         if (generation_config.min_length !== null && generation_config.eos_token_id !== null && generation_config.min_length > 0) {
-            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.MinLengthLogitsProcessor(generation_config.min_length, generation_config.eos_token_id));
+            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.MinLengthLogitsProcessor(generation_config.min_length, generation_config.eos_token_id));
         }
 
         if (generation_config.min_new_tokens !== null && generation_config.eos_token_id !== null && generation_config.min_new_tokens > 0) {
-            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.MinNewTokensLengthLogitsProcessor(
+            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.MinNewTokensLengthLogitsProcessor(
                 input_ids_seq_length,
                 generation_config.min_new_tokens,
                 generation_config.eos_token_id
@@ -7838,11 +7841,11 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
 
 
         if (generation_config.forced_bos_token_id !== null) {
-            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.ForcedBOSTokenLogitsProcessor(generation_config.forced_bos_token_id));
+            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.ForcedBOSTokenLogitsProcessor(generation_config.forced_bos_token_id));
         }
 
         if (generation_config.forced_eos_token_id !== null) {
-            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.ForcedEOSTokenLogitsProcessor(
+            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.ForcedEOSTokenLogitsProcessor(
                 generation_config.max_length,
                 generation_config.forced_eos_token_id
             ));
@@ -7869,7 +7872,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
                 ? input_ids_seq_length
                 : input_ids_seq_length + 1;
 
-            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.SuppressTokensAtBeginLogitsProcessor(generation_config.begin_suppress_tokens, begin_index));
+            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.SuppressTokensAtBeginLogitsProcessor(generation_config.begin_suppress_tokens, begin_index));
         }
 
         // DEPRECATED: https://github.com/huggingface/transformers/pull/29485
@@ -7880,7 +7883,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
 
         // 8. prepare batched CFG externally
         if (generation_config.guidance_scale !== null && generation_config.guidance_scale > 1) {
-            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.ClassifierFreeGuidanceLogitsProcessor(generation_config.guidance_scale));
+            processors.push(new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.ClassifierFreeGuidanceLogitsProcessor(generation_config.guidance_scale));
         }
 
         if (logits_processor !== null) {
@@ -7902,7 +7905,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
      * @param {Object} kwargs Additional generation parameters to be used in place of those in the `generation_config` object.
      * @returns {GenerationConfig} The final generation config object to be used by the model for text generation.
      */
-    _prepare_generation_config(generation_config, kwargs, cls = _generation_configuration_utils_js__WEBPACK_IMPORTED_MODULE_7__.GenerationConfig) {
+    _prepare_generation_config(generation_config, kwargs, cls = _generation_configuration_utils_js__WEBPACK_IMPORTED_MODULE_8__.GenerationConfig) {
         // Create empty generation config (contains defaults)
         // We pass `this.config` so that if `eos_token_id` or `bos_token_id` exist in the model's config, we will use them
         const config = { ...this.config };
@@ -7939,10 +7942,10 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
      * @param {StoppingCriteriaList} [stopping_criteria=null] 
      */
     _get_stopping_criteria(generation_config, stopping_criteria = null) {
-        const criteria = new _generation_stopping_criteria_js__WEBPACK_IMPORTED_MODULE_10__.StoppingCriteriaList();
+        const criteria = new _generation_stopping_criteria_js__WEBPACK_IMPORTED_MODULE_11__.StoppingCriteriaList();
 
         if (generation_config.max_length !== null) {
-            criteria.push(new _generation_stopping_criteria_js__WEBPACK_IMPORTED_MODULE_10__.MaxLengthCriteria(
+            criteria.push(new _generation_stopping_criteria_js__WEBPACK_IMPORTED_MODULE_11__.MaxLengthCriteria(
                 generation_config.max_length,
                 this.config.max_position_embeddings ?? null,
             ));
@@ -7951,7 +7954,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
         //     criteria.push(new MaxTimeCriteria(generation_config.max_time));
         // }
         if (generation_config.eos_token_id !== null) {
-            criteria.push(new _generation_stopping_criteria_js__WEBPACK_IMPORTED_MODULE_10__.EosTokenCriteria(generation_config.eos_token_id));
+            criteria.push(new _generation_stopping_criteria_js__WEBPACK_IMPORTED_MODULE_11__.EosTokenCriteria(generation_config.eos_token_id));
         }
 
         if (stopping_criteria) {
@@ -8012,14 +8015,14 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
         model_inputs['past_key_values'] = this.getPastKeyValues(outputs, model_inputs.past_key_values);
 
         // update inputs for next run
-        model_inputs['input_ids'] = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor('int64', generated_input_ids.flat(), [generated_input_ids.length, 1]);
+        model_inputs['input_ids'] = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor('int64', generated_input_ids.flat(), [generated_input_ids.length, 1]);
 
         if (!is_encoder_decoder) {
             // update attention mask
-            model_inputs.attention_mask = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)(
+            model_inputs.attention_mask = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)(
                 [
                     model_inputs.attention_mask,
-                    (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.ones)([model_inputs.attention_mask.dims[0], 1]),
+                    (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.ones)([model_inputs.attention_mask.dims[0], 1]),
                 ], 1
             );
         } else if ('decoder_attention_mask' in model_inputs) {
@@ -8079,15 +8082,15 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
         // for classifier free guidance we need to add a 'null' input to our encoder hidden states
         if (generation_config.guidance_scale !== null && generation_config.guidance_scale > 1) {
 
-            last_hidden_state = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)([
+            last_hidden_state = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)([
                 last_hidden_state,
-                (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.full_like)(last_hidden_state, 0.0),
+                (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.full_like)(last_hidden_state, 0.0),
             ], 0);
 
             if ('attention_mask' in model_inputs) {
-                model_inputs['attention_mask'] = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)([
+                model_inputs['attention_mask'] = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)([
                     model_inputs['attention_mask'],
-                    (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.zeros_like)(model_inputs['attention_mask']),
+                    (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.zeros_like)(model_inputs['attention_mask']),
                 ], 0);
             }
 
@@ -8101,7 +8104,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
                         `The encoder outputs have a different batch size (${last_hidden_state.dims[0]}) than the decoder inputs (${decoder_input_ids_batch_size}).`
                     )
                 }
-                last_hidden_state = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)(Array.from({ length: decoder_input_ids_batch_size }, () => last_hidden_state), 0);
+                last_hidden_state = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)(Array.from({ length: decoder_input_ids_batch_size }, () => last_hidden_state), 0);
             }
         }
         model_inputs['encoder_outputs'] = last_hidden_state;
@@ -8146,7 +8149,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
         }
 
         decoder_input_ids = toI64Tensor(decoder_input_ids);
-        model_kwargs['decoder_attention_mask'] = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.ones_like)(decoder_input_ids);
+        model_kwargs['decoder_attention_mask'] = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.ones_like)(decoder_input_ids);
 
         return { input_ids: decoder_input_ids, model_inputs };
     }
@@ -8256,7 +8259,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
         // when the beam is complete, and we keep track of the row index
         // const rowIndexToBatchIndex = new Map();
 
-        const sampler = _generation_logits_sampler_js__WEBPACK_IMPORTED_MODULE_11__.LogitsSampler.getSampler(generation_config);
+        const sampler = _generation_logits_sampler_js__WEBPACK_IMPORTED_MODULE_12__.LogitsSampler.getSampler(generation_config);
 
         // TODO make > numInputs
         const scores = new Array(numInputs).fill(0);
@@ -8345,7 +8348,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
         const past_key_values = this.getPastKeyValues(outputs, model_inputs.past_key_values, true);
 
         // TODO: ensure all_input_ids is padded correctly...
-        const sequences = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor('int64', all_input_ids.flat(), [all_input_ids.length, all_input_ids[0].length]);
+        const sequences = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor('int64', all_input_ids.flat(), [all_input_ids.length, all_input_ids[0].length]);
 
         if (generation_config.return_dict_in_generate) {
             return {
@@ -8442,7 +8445,7 @@ class PreTrainedModel extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_3__.Cal
             const shapes = (0,_configs_js__WEBPACK_IMPORTED_MODULE_0__.getKeyValueShapes)(this.config);
 
             for (const name in shapes) {
-                decoderFeeds[name] = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor(dtype, empty, shapes[name]);
+                decoderFeeds[name] = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor(dtype, empty, shapes[name]);
             }
         }
     }
@@ -9717,7 +9720,7 @@ class WhisperModel extends WhisperPreTrainedModel { }
 class WhisperForConditionalGeneration extends WhisperPreTrainedModel {
 
     _prepare_generation_config(generation_config, kwargs) {
-        return /** @type {WhisperGenerationConfig} */ (super._prepare_generation_config(generation_config, kwargs, _models_whisper_generation_whisper_js__WEBPACK_IMPORTED_MODULE_13__.WhisperGenerationConfig));
+        return /** @type {WhisperGenerationConfig} */ (super._prepare_generation_config(generation_config, kwargs, _models_whisper_generation_whisper_js__WEBPACK_IMPORTED_MODULE_14__.WhisperGenerationConfig));
     }
 
     /**
@@ -9743,7 +9746,7 @@ class WhisperForConditionalGeneration extends WhisperPreTrainedModel {
             }
 
             // Add language token
-            const language_code = (0,_models_whisper_common_whisper_js__WEBPACK_IMPORTED_MODULE_14__.whisper_language_to_code)(language);
+            const language_code = (0,_models_whisper_common_whisper_js__WEBPACK_IMPORTED_MODULE_15__.whisper_language_to_code)(language);
             const language_token = `<|${language_code}|>`;
             init_tokens.push(generation_config.lang_to_id[language_token])
 
@@ -9800,16 +9803,16 @@ class WhisperForConditionalGeneration extends WhisperPreTrainedModel {
         const init_tokens = kwargs.decoder_input_ids ?? this._retrieve_init_tokens(generation_config);
 
         if (generation_config.return_timestamps) {
-            logits_processor ??= new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.LogitsProcessorList();
+            logits_processor ??= new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.LogitsProcessorList();
             logits_processor.push(
-                new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.WhisperTimeStampLogitsProcessor(generation_config, init_tokens)
+                new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.WhisperTimeStampLogitsProcessor(generation_config, init_tokens)
             );
         }
 
         if (generation_config.begin_suppress_tokens) {
-            logits_processor ??= new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.LogitsProcessorList();
+            logits_processor ??= new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.LogitsProcessorList();
             logits_processor.push(
-                new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_6__.SuppressTokensAtBeginLogitsProcessor(generation_config.begin_suppress_tokens, init_tokens.length)
+                new _generation_logits_process_js__WEBPACK_IMPORTED_MODULE_7__.SuppressTokensAtBeginLogitsProcessor(generation_config.begin_suppress_tokens, init_tokens.length)
             );
         }
 
@@ -9886,10 +9889,10 @@ class WhisperForConditionalGeneration extends WhisperPreTrainedModel {
         // (batch size, attention_heads, output length, input length).
         const cross_attentions = Array.from({ length: this.config.decoder_layers },
             // Concatenate the cross attentions for each layer across sequence length dimension.
-            (_, i) => (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)(batch.map(x => x[i]), 2)
+            (_, i) => (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)(batch.map(x => x[i]), 2)
         );
 
-        const weights = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.stack)(alignment_heads.map(([l, h]) => {
+        const weights = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.stack)(alignment_heads.map(([l, h]) => {
             if (l >= cross_attentions.length) {
                 throw new Error(`Layer index ${l} is out of bounds for cross attentions (length ${cross_attentions.length}).`)
             }
@@ -9898,7 +9901,7 @@ class WhisperForConditionalGeneration extends WhisperPreTrainedModel {
                 : cross_attentions[l].slice(null, h);
         })).transpose(1, 0, 2, 3);
 
-        const [std, calculatedMean] = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.std_mean)(weights, -2, 0, true);
+        const [std, calculatedMean] = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.std_mean)(weights, -2, 0, true);
 
         // Normalize and smoothen the weights.
         const smoothedWeights = weights.clone(); // [1, 8, seqLength, 1500]
@@ -9920,17 +9923,17 @@ class WhisperForConditionalGeneration extends WhisperPreTrainedModel {
                     }
 
                     // Apply median filter.
-                    cTensorData.set((0,_utils_maths_js__WEBPACK_IMPORTED_MODULE_9__.medianFilter)(cTensorData, median_filter_width))
+                    cTensorData.set((0,_utils_maths_js__WEBPACK_IMPORTED_MODULE_10__.medianFilter)(cTensorData, median_filter_width))
                 }
             }
         }
 
         // Average the different cross-attention heads.
-        const batchedMatrices = [(0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.mean)(smoothedWeights, 1)];
+        const batchedMatrices = [(0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.mean)(smoothedWeights, 1)];
 
         const timestampsShape = generate_outputs.sequences.dims;
 
-        const timestamps = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor(
+        const timestamps = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor(
             'float32',
             new Float32Array(timestampsShape[0] * timestampsShape[1]),
             timestampsShape
@@ -9941,7 +9944,7 @@ class WhisperForConditionalGeneration extends WhisperPreTrainedModel {
             // NOTE: Since we run only one batch at a time, we can squeeze to get the same dimensions
             // as the python implementation
             const matrix = batchedMatrices[batch_idx].neg().squeeze_(0);
-            const [text_indices, time_indices] = (0,_utils_maths_js__WEBPACK_IMPORTED_MODULE_9__.dynamic_time_warping)(matrix.tolist());
+            const [text_indices, time_indices] = (0,_utils_maths_js__WEBPACK_IMPORTED_MODULE_10__.dynamic_time_warping)(matrix.tolist());
 
             const diffs = Array.from({ length: text_indices.length - 1 }, (v, i) => text_indices[i + 1] - text_indices[i]);
             const jumps = (0,_utils_core_js__WEBPACK_IMPORTED_MODULE_4__.mergeArrays)([1], diffs).map(x => !!x); // convert to boolean
@@ -10031,7 +10034,7 @@ class LlavaForConditionalGeneration extends LlavaPreTrainedModel {
             const im = image_features[i];
             const am = attention_mask[i];
             stacked.push(
-                (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)([
+                (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)([
                     e.slice([0, index]),
                     im,
                     e.slice([index + 1, e.dims[0]]),
@@ -10039,17 +10042,17 @@ class LlavaForConditionalGeneration extends LlavaPreTrainedModel {
             );
 
             stacked_attention_mask.push(
-                (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)([
+                (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)([
                     am.slice([0, index]),
-                    (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.ones)([im.dims[0]]),
+                    (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.ones)([im.dims[0]]),
                     am.slice([index + 1, am.dims[0]])
                 ], 0)
             )
         }
 
         return {
-            inputs_embeds: (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.stack)(stacked, 0),
-            attention_mask: (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.stack)(stacked_attention_mask, 0),
+            inputs_embeds: (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.stack)(stacked, 0),
+            attention_mask: (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.stack)(stacked_attention_mask, 0),
         }
     }
 }
@@ -10084,12 +10087,12 @@ class Florence2ForConditionalGeneration extends Florence2PreTrainedModel {
         attention_mask,
     }) {
         return {
-            inputs_embeds: (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)([
+            inputs_embeds: (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)([
                 image_features, // image embeds
                 inputs_embeds, // task prefix embeds
             ], 1),
-            attention_mask: (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)([
-                (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.ones)(image_features.dims.slice(0, 2)), // image attention mask
+            attention_mask: (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)([
+                (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.ones)(image_features.dims.slice(0, 2)), // image attention mask
                 attention_mask, // task prefix attention mask
             ], 1),
         }
@@ -11525,7 +11528,7 @@ class SamModel extends SamPreTrainedModel {
             // Set default input labels if they are missing
             const shape = model_inputs.input_points.dims.slice(0, -1);
             const numElements = shape.reduce((a, b) => a * b, 1);
-            model_inputs.input_labels = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor(
+            model_inputs.input_labels = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor(
                 'int64',
                 new BigInt64Array(numElements).fill(1n),
                 shape
@@ -11684,7 +11687,7 @@ class PyAnnoteModel extends PyAnnotePreTrainedModel { }
  * **Example:** Load and run a `PyAnnoteForAudioFrameClassification` for speaker diarization.
  * 
  * ```javascript
- * import { AutoProcessor, AutoModelForAudioFrameClassification, read_audio } from '@xenova/transformers';
+ * import { AutoProcessor, AutoModelForAudioFrameClassification, read_audio } from '@huggingface/transformers';
  * 
  * // Load model and processor
  * const model_id = 'onnx-community/pyannote-segmentation-3.0';
@@ -12210,7 +12213,7 @@ class SpeechT5ForTextToSpeech extends SpeechT5PreTrainedModel {
             if (decoder_outputs) {
                 output_sequence = decoder_outputs.output_sequence_out;
             } else {
-                output_sequence = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor(
+                output_sequence = new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor(
                     'float32',
                     new Float32Array(num_mel_bins),
                     [1, 1, num_mel_bins],
@@ -12239,7 +12242,7 @@ class SpeechT5ForTextToSpeech extends SpeechT5PreTrainedModel {
             }
         }
 
-        const spectrogram = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.cat)(spectrogramParts);
+        const spectrogram = (0,_utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.cat)(spectrogramParts);
         const { waveform } = await sessionRun(vocoder.sessions['model'], { spectrogram });
 
         return {
@@ -12577,7 +12580,7 @@ class MusicgenForConditionalGeneration extends PreTrainedModel { // NOTE: not Mu
         const batch_size = Math.floor(bs_x_codebooks / num_codebooks);
         const inferred = newDataSize / (batch_size * num_codebooks);
         // TODO: assert `inferred` is an integer
-        return new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_8__.Tensor(
+        return new _utils_tensor_js__WEBPACK_IMPORTED_MODULE_9__.Tensor(
             outputs.type,
             outputs.data.slice(0, newDataSize),
             [batch_size, num_codebooks, inferred]
@@ -20403,7 +20406,7 @@ const PROBLEMATIC_REGEX_MAP = new Map([
     ["(?i:'s|'t|'re|'ve|'m|'ll|'d)", "(?:'([sS]|[tT]|[rR][eE]|[vV][eE]|[mM]|[lL][lL]|[dD]))"],
 
     // Used to override the default (invalid) regex of the bloom pretokenizer.
-    // For more information, see https://github.com/xenova/transformers.js/issues/94
+    // For more information, see https://github.com/huggingface/transformers.js/issues/94
     [` ?[^(\\s|[${BLOOM_SPLIT_CHARS}])]+`, ` ?[^\\s${BLOOM_SPLIT_CHARS}]+`],
 ])
 
@@ -22697,7 +22700,7 @@ class PreTrainedTokenizer extends _utils_generic_js__WEBPACK_IMPORTED_MODULE_0__
 
             // Another slight hack to add `end_of_word_suffix` (if present) to the decoder
             // This is needed for cases where BPE model and ByteLevel decoder are used
-            // For more information, see https://github.com/xenova/transformers.js/issues/74
+            // For more information, see https://github.com/huggingface/transformers.js/issues/74
             // TODO: save this to the decoder when exporting?
             this.decoder.end_of_word_suffix = this.model.end_of_word_suffix;
         }
@@ -25216,7 +25219,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   GITHUB_ISSUE_URL: () => (/* binding */ GITHUB_ISSUE_URL)
 /* harmony export */ });
 
-const GITHUB_ISSUE_URL = 'https://github.com/xenova/transformers.js/issues/new/choose';
+const GITHUB_ISSUE_URL = 'https://github.com/huggingface/transformers.js/issues/new/choose';
 
 /***/ }),
 
